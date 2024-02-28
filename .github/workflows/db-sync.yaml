@@ -1,0 +1,46 @@
+---
+#------------------------------------------------------------------------------
+# escrito por: Lawrence McDaniel
+#              https://lawrencemcdaniel.com
+#
+# fecha:       2024-feb
+#
+# descripción: muestro de un flujo de trabajo de GitHub para conectar a una
+#              base de datos MSSQL Server, ejecutar una consulta y
+#              descargar los resultados.
+#------------------------------------------------------------------------------
+name: DB Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+env:
+  DOCKER_CONTAINER: mcr.microsoft.com/mssql/server:2019-latest
+  MSSQL_PID: Standard
+  MSSQL_PORT: 1433
+  DB_SERVER: ${{ secrets.DB_SERVER }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  SQL_QUERY: "SELECT * FROM dbo.cursos_habilitados"
+
+jobs:
+  db-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkoutear código
+        uses: actions/checkout@v4
+
+      - name: Ejecutar SQL query and descargar los resultados
+        run: |
+          docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=${{ env.MSSQL_PID }}' -p ${{ env.MSSQL_PORT }}:${{ env.MSSQL_PORT }} -d ${{ env.DOCKER_CONTAINER }}
+          sleep 15
+          docker run -v $PWD:/scripts --net=host mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd -S ${{ env.DB_SERVER }},1433 -d ${{ env.DB_NAME }} -U ${{ env.DB_USER }} -P ${{ env.DB_PASSWORD }} -Q "${{ env.SQL_QUERY }}" > results.txt
+
+      - name: Haz algo con los resultados
+        uses: actions/upload-artifact@v4
+        with:
+          name: query-results
+          path: results.txt

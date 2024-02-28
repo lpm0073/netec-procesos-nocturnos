@@ -1,0 +1,9 @@
+{
+  "cornflakes.linter.executablePath": "venv/bin/flake8",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "[yaml]": {
+    "editor.tabSize": 2
+  }
+}

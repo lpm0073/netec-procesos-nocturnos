@@ -1,0 +1,87 @@
+keen**
+
+db.sqlite3
+staticfiles
+
+# build
+**/build/
+# But don't ignore '.github/actions/build'
+!.github/actions/build/
+
+# coverage
+.coverage
+.coverage.*
+htmlcov
+
+# Jupyter Notebook
+.ipynb_checkpoints
+dist
+
+# os files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# log data
+*.log
+*.db
+*.out
+
+# typical secrets files
+.env
+secrets.json
+config.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+*.der
+*.p7b
+*.p7c
+
+# Local .terraform directories
+.terragrunt-cache/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+.terraform/
+lambda_dist_pkg
+*.zip
+__pycache__
+.pytest_cache
+.cache.sqlite
+
+# Python
+venv
+.venv
+.pytest_cache
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.log
+
+# .tfstate files
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+
+
+# ignore this file
+!tfmodule-template.tf
+
+# tardigrade-ci
+tardigrade-ci/
+.tardigrade-ci
+
+# go tests
+tests/go.*
+
+# ReactJS
+node_modules
+package-lock.json
+
+client/node_modules/
+client/package-lock.json
